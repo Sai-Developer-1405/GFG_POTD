@@ -1,0 +1,24 @@
+class Solution:
+    def smallestSubstring(self, s):
+        # Code here
+        ans=float('inf')
+        n=len(s)
+        x=-1
+        y=-1
+        z=-1
+        for i in range(n):
+            if (s[i]=='0'):
+                x=i
+            elif (s[i]=='1'):
+                y=i
+            elif(s[i]=='2'):
+                z=i
+            if (x==-1 or y==-1 or z==-1):
+                continue
+            maxl=max(x,y,z)
+            minl=min(x,y,z)
+            ans=min(ans,maxl-minl+1)
+        if (ans==float('inf')):
+            return -1
+        else:
+            return ans
