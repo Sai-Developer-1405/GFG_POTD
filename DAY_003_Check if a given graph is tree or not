@@ -1,0 +1,11 @@
+
+        for ch in newString:
+            if ch in charSet:
+                return False
+
+            charSet.add(ch)
+
+            if ch in currentString:
+                return False
+
+        return True
