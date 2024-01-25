@@ -1,0 +1,12 @@
+class Solution:    
+    def fractionalknapsack(self, W,arr,n):
+        arr.sort(key=lambda x:x.value/x.weight,reverse=True)
+        ans=0
+        for i in arr:
+            if i.weight>=W:
+                ans+=W/i.weight*i.value
+                return ans
+            else:
+                ans+=i.value
+                W-=i.weight
+        return ans
