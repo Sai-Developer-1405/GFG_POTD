@@ -1,0 +1,40 @@
+class Solution:
+    # Perform BFS and check
+    def solve(self, Num1, Num2):
+        # Perform BFS and check
+        queue = []
+        visited = set()
+        queue.append((Num1, 0))
+        visited.add(Num1)
+    
+        while queue:
+            curr, level = queue.pop(0)
+    
+            if curr == Num2:
+                return level
+    
+            for i in range(4):
+                for digit in range(10):
+                    newNum = curr
+    
+                    if i == 0 and digit == 0:
+                        continue
+    
+                    newNum = int(str(curr)[:i] + str(digit) + str(curr)[i+1:])
+    
+                    if newNum not in visited and self.isPrime(newNum):
+                        queue.append((newNum, level+1))
+                        visited.add(newNum)
+    
+        return -1
+    
+    def isPrime(self, n):
+        if n < 2:
+            return False
+    
+        for i in range(2, int(n**0.5)+1):
+            if n % i == 0:
+                return False
+    
+        return True
+
