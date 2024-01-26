@@ -1,5 +1,4 @@
 class Solution:
-    # Perform BFS and check
     def solve(self, Num1, Num2):
         # Perform BFS and check
         queue = []
