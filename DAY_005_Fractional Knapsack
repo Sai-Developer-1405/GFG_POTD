@@ -9,4 +9,5 @@ class Solution:
             else:
                 ans+=i.value
                 W-=i.weight
+
         return ans
