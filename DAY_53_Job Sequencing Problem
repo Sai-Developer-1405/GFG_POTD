@@ -1,0 +1,32 @@
+class Solution:
+    def jobSequencing(self, deadline, profit):
+        from heapq import heappush, heapreplace
+        h = []
+        for i in sorted(range(len(deadline)), key=lambda i: deadline[i]):
+            if len(h) < deadline[i]:
+                heappush(h, profit[i])
+            elif h[0] < profit[i]:
+                heapreplace(h, profit[i])
+        return len(h), sum(h)
+        # code here
+
+
+#{ 
+ # Driver Code Starts
+#Initial Template for Python 3
+import heapq
+
+#Position this line where user code will be pasted.
+
+if __name__ == "__main__":
+    t = int(input().strip())
+
+    for _ in range(t):
+        deadline = list(map(int, input().strip().split()))
+        profit = list(map(int, input().strip().split()))
+
+        obj = Solution()
+        ans = obj.jobSequencing(deadline, profit)
+        print(ans[0], ans[1])
+        print("~")
+# } Driver Code Ends
