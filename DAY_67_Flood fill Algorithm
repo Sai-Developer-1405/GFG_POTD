@@ -1,0 +1,82 @@
+//{ Driver Code Starts
+import java.io.*;
+import java.lang.*;
+import java.util.*;
+
+class GFG {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine().trim());
+        while (T-- > 0) {
+            int n = Integer.parseInt(br.readLine().trim());
+            int m = Integer.parseInt(br.readLine().trim());
+            int[][] image = new int[n][m];
+            for (int i = 0; i < n; i++) {
+                String[] S2 = br.readLine().trim().split(" ");
+                for (int j = 0; j < m; j++) image[i][j] = Integer.parseInt(S2[j]);
+            }
+            int sr = Integer.parseInt(br.readLine().trim());
+            int sc = Integer.parseInt(br.readLine().trim());
+            int newColor = Integer.parseInt(br.readLine().trim());
+            Solution obj = new Solution();
+            int[][] ans = obj.floodFill(image, sr, sc, newColor);
+            for (int i = 0; i < ans.length; i++) {
+                for (int j = 0; j < ans[i].length; j++)
+                    System.out.print(ans[i][j] + " ");
+                System.out.println();
+            }
+
+            System.out.println("~");
+        }
+    }
+}
+
+// } Driver Code Ends
+
+
+class Solution {
+    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+        int n = image.length;      
+        int m = image[0].length;   
+        int startColor = image[sr][sc];
+        
+        // If the start color is the same as the new color, no need to do anything
+        if (startColor == newColor) return image;
+        
+        // Directions for up, right, down, left
+        int[] drow = {-1, 0, 1, 0}; 
+        int[] dcol = {0, 1, 0, -1};
+        
+        // Stack to store the cells that need to be processed
+        Stack<int[]> stack = new Stack<>();
+        stack.push(new int[] {sr, sc});
+        
+        // Process the stack iteratively
+        while (!stack.isEmpty()) 
+        {
+            int[] cell = stack.pop();
+            int r = cell[0];
+            int c = cell[1];
+            
+            // Change the color of the current cell
+            if (image[r][c] == startColor)
+            {
+                image[r][c] = newColor;
+                // Push neighboring cells into the stack if they match the start color
+                for (int i = 0; i < 4; i++) 
+                {
+                    int newRow = r + drow[i];
+                    int newCol = c + dcol[i];
+                    
+                    if (newRow >= 0 && newRow < n && newCol >= 0 && 
+                        newCol < m && image[newRow][newCol] == startColor) 
+                    {
+                        stack.push(new int[] {newRow, newCol});
+                    }
+                }
+            }
+        }
+        
+        return image;
+    }
+}
