@@ -1,0 +1,77 @@
+class Solution:
+    def accountsMerge(self, accounts):
+        from collections import defaultdict
+        parent= {}
+        
+        def find(x):
+            if parent[x] !=x:
+                parent[x] = find(parent[x])
+            return parent[x]
+            
+        def union(x,y):
+            parent[find(x)]= find(y)
+            
+        email_to_name={}
+        
+        for account in accounts:
+            name = account[0]
+            for email in account[1:]:
+                if email not in parent:
+                    parent[email] = email
+                email_to_name[email] = name
+                union(account[1], email)
+        unions= defaultdict(list)
+        
+        for email in parent:
+            root = find(email)
+            unions[root].append(email)
+            
+        result = []
+        for root in unions:
+            name = email_to_name[root]
+            emails = sorted(unions[root])
+            result.append([name] + emails)
+        return result
+            
+
+
+#{ 
+ # Driver Code Starts
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        accounts = []
+        for i in range(n):
+            cntEmails = int(input())  # Number of emails + name
+            nameEmails = input().split()  # Read name + emails
+            accounts.append(nameEmails)
+
+        # Calling the accountsMerge function
+        ob = Solution()
+        res = ob.accountsMerge(accounts)
+
+        # Sorting individual accounts' emails
+        for i in range(len(res)):
+            res[i].sort()  # Sort emails in each account
+
+        # Sorting the entire result list lexicographically like C++
+        res.sort(key=lambda x: tuple(x))
+
+        # Printing the output in the required format
+        print('[', end='')
+        for i in range(len(res)):
+            print('[', end='')
+            for j in range(len(res[i])):
+                if j != (len(res[i]) - 1):
+                    print(res[i][j], end=', ')
+                else:
+                    print(res[i][j], end='')
+            if (i != len(res) - 1):
+                print('], ')
+            else:
+                print(']', end='')
+        print(']')
+        print('~')
+
+# } Driver Code Ends
