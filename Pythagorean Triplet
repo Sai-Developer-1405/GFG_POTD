@@ -1,26 +1,19 @@
 class Solution {
     boolean pythagoreanTriplet(int[] arr) {
-        int n=arr.length;
-        for(int i=0;i<n;i++){
-        arr[i]=arr[i]*arr[i];
-        }
-        Arrays.sort(arr);
+        // code here
+        HashSet<Integer> set=new HashSet<>();
         
-        for(int i=n-1;i>=2;i--){
-            int low=0;
-            int high=n-1;
-            
-            while(low<high){
-                int sum=arr[low]+arr[high];
-                if(sum==arr[i]){
-                    return true;
-                }else if(sum<arr[i]){
-                    low++;
-                }else{
-                    high--;
-                }
+        for(int i=0;i<arr.length;i++){
+            if(arr[i]<=0) continue;
+            set.add(arr[i]*arr[i]);
+        }
+        
+        for(int a: set){
+            for(int b:set){
+                if(set.contains(a+b)) return true;
             }
         }
+        
         return false;
     }
 }
