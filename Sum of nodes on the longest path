@@ -1,0 +1,46 @@
+class Solution{
+    // pair to store max height and max sum for each node 
+    class Pair {
+        int sum;
+        int height;
+        
+        public Pair(){}
+        
+        public Pair(int sum, int height){
+            this.sum = sum;
+            this.height = height;
+        }
+    }
+    
+    public int sumOfLongRootToLeafPath(Node root)
+    {
+        Pair p = helper(root);
+        return p.sum;
+    }
+    
+    public Pair helper(Node root) {
+        if(root == null) return null;
+        if(root.left == null && root.right == null) return new Pair(root.data, 1);
+        
+        Pair left = helper(root.left);
+        Pair right = helper(root.right);
+        Pair curr = new Pair();
+        // if left is null, means only right child present, add it's data to curr and return
+        if(left == null) return new Pair(root.data + right.sum, right.height + 1);
+        // if right is null, means only left child present, add it's data to curr and return
+        if(right == null) return new Pair(root.data + left.sum, left.height + 1);
+        
+        if(left.height > right.height) { // left path length is longer
+            curr.sum = left.sum + root.data;
+            curr.height = left.height + 1;
+        } else if(left.height < right.height) { // right path length is longer
+            curr.sum = right.sum + root.data;
+            curr.height = right.height + 1;
+        } else {    // equal path length case
+            curr.sum = Math.max(left.sum, right.sum) + root.data;
+            curr.height = right.height + 1;
+        }
+        
+        return curr;
+    }
+}
