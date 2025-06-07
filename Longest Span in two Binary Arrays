@@ -1,0 +1,24 @@
+class Solution {
+// transfer to prefix summary that is zero.  
+    int longestCommonSum(int arr1[], int arr2[]) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int n = Math.min(arr1.length , arr2.length);
+        
+        int[] nums = new int[n];
+        
+        int ans = 0;
+        int sum = 0;
+        map.put(0, -1);
+        for (int i = 0; i < n; i++) {
+            nums[i] = arr1[i] != arr2[i] ? (arr1[i] == 1 ? 1 : -1) : 0;
+        }
+        for (int i = 0; i < n; i++) {
+            sum += nums[i];
+            map.putIfAbsent(sum, i);
+            if (map.containsKey(sum)) {
+                ans = Math.max(ans, i - map.get(sum));
+            }
+        }
+        return ans;
+    }
+}
