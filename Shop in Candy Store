@@ -1,0 +1,33 @@
+class Solution {
+    public ArrayList<Integer> minMaxCandy(int[] prices, int k) {
+        
+        Arrays.sort(prices);
+        int n = prices.length;
+
+        int minSum = 0, maxSum = 0;
+
+        // Minimum cost calculation
+        int start = 0, end = n - 1;
+        while (start <= end) {
+            minSum += prices[start]; // buy cheapest
+            start++;
+            end -= k; // take k most expensive for free
+        }
+
+        // Maximum cost calculation
+        start = 0;
+        end = n - 1;
+        while (start <= end) {
+            maxSum += prices[end]; // buy most expensive
+            end--;
+            start += k; // take k cheapest for free
+        }
+
+        ArrayList<Integer> result = new ArrayList<>();
+        result.add(minSum);
+        result.add(maxSum);
+        return result;
+        
+    }
+}
+
