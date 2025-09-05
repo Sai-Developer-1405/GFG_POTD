@@ -1,0 +1,33 @@
+class Solution {
+  public:
+    Node* segregate(Node* head) {
+        // code here
+        int zero =0,one = 0,two = 0;
+        Node *temp = head;
+        while(temp!=nullptr)
+        {
+             zero = zero + (temp->data == 0);
+             one = one + (temp->data == 1);
+             two = two + (temp->data ==2);
+             temp = temp->next;
+        }
+      
+        temp = head;
+        while(zero--)
+        {
+            temp->data = 0;
+            temp = temp->next;
+        }
+        while(one--)
+        {
+            temp->data = 1;
+            temp = temp->next;
+        }
+        while(two--)
+        {
+            temp->data = 2;
+            temp = temp->next;
+        }
+        return head;
+    }
+};
