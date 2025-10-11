@@ -1,0 +1,18 @@
+class Solution {
+    static final int MINI = -10000;
+    int findMaxSum(Node root) {
+        return dfs(root)[1];
+    }
+    int[] dfs(Node node) {
+        if (node == null)
+            return new int[]{MINI, MINI};
+        int[] left = dfs(node.left);
+        int[] right = dfs(node.right);
+        int lpath = left[0], lmax = left[1];
+        int rpath = right[0], rmax = right[1];
+        int path = node.data + Math.max(0, Math.max(lpath, rpath));
+        int maxi = Math.max(Math.max(lmax, rmax), Math.max(0, lpath) + node.data + Math.max(0, rpath));
+
+        return new int[]{path, maxi};
+    }
+}
