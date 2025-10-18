@@ -1,0 +1,32 @@
+class Solution {
+    public int findMedian(Node root) {
+        int result1 = countNodes(root);
+        int index = 0;
+        if(result1 %2 == 0){
+            index = result1/2;
+        }else{
+            index = (result1+1)/2;
+        }
+        
+        return searchNode(root, -index);
+    }
+    
+    public int countNodes(Node root){
+        if(root == null) return 0;
+        
+        return 1 + countNodes(root.left) + countNodes(root.right);
+        
+    }
+    
+    public int searchNode(Node root, int index){
+        if(root == null) return index;
+        
+        int result1 = searchNode(root.left, index);
+        if(result1 > 0) return result1;
+        index = result1+1;
+        if(index == 0) return root.data;
+        int result2 = searchNode(root.right, index);
+        
+        return result2;
+    }
+}
