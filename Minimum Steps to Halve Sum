@@ -1,0 +1,33 @@
+import java.util.stream.Collectors;
+
+class Solution {
+    public int minOperations(int[] arr) {
+        // PriorityQueue to always fetch the largest element first
+        // SC: O(n) — stores all n elements
+        PriorityQueue<Double> maxpq = new PriorityQueue<>(Collections.reverseOrder());
+        
+        // Convert int[] → List<Double> and heapify in O(n)
+        maxpq.addAll(Arrays.stream(arr)
+                           .boxed()
+                           .map(Double::valueOf)
+                           .collect(Collectors.toCollection(ArrayList::new)));
+        
+        // Compute total sum
+        double sum = Arrays.stream(arr).reduce(0, (a, b) -> a + b);
+        double target = sum / 2;   // desired reduction target
+        double reduced = 0;        // cumulative reduction
+        int steps = 0;             // operation count
+        
+        // Greedily halve the largest elements until total reduction ≥ target
+        // TC: O(n + k·logn) — heapify O(n), each of k operations costs O(logn)
+        while (reduced < target) {
+            double largest = maxpq.poll();
+            double halved = largest / 2;
+            reduced += halved;
+            maxpq.offer(halved);
+            steps++;
+        }
+        
+        return steps;
+    }
+}
