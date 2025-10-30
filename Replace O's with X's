@@ -1,0 +1,74 @@
+class Solution {
+    public void fill(char[][] grid) {
+        if (grid == null || grid.length == 0) return;
+        int n = grid.length;
+        int m = grid[0].length;
+        int maxSize = n * m;
+        int[] stackR = new int[maxSize];
+        int[] stackC = new int[maxSize];
+        int top;
+
+    
+        int[] dr = {-1, 1, 0, 0};
+        int[] dc = {0, 0, -1, 1};
+
+
+        top = -1;
+        for (int j = 0; j < m; j++) {
+            if (grid[0][j] == 'O') {
+                grid[0][j] = '#';
+                top++;
+                stackR[top] = 0;
+                stackC[top] = j;
+            }
+            if (grid[n - 1][j] == 'O') {
+                grid[n - 1][j] = '#';
+                top++;
+                stackR[top] = n - 1;
+                stackC[top] = j;
+            }
+        }
+        for (int i = 1; i < n - 1; i++) {
+            if (grid[i][0] == 'O') {
+                grid[i][0] = '#';
+                top++;
+                stackR[top] = i;
+                stackC[top] = 0;
+            }
+            if (grid[i][m - 1] == 'O') {
+                grid[i][m - 1] = '#';
+                top++;
+                stackR[top] = i;
+                stackC[top] = m - 1;
+            }
+        }
+
+       
+        while (top >= 0) {
+            int r = stackR[top];
+            int c = stackC[top];
+            top--;
+            for (int k = 0; k < 4; k++) {
+                int nr = r + dr[k];
+                int nc = c + dc[k];
+                if (nr >= 0 && nr < n && nc >= 0 && nc < m && grid[nr][nc] == 'O') {
+                    grid[nr][nc] = '#'; // mark as visited (border-connected)
+                    top++;
+                    stackR[top] = nr;
+                    stackC[top] = nc;
+                }
+            }
+        }
+
+      
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 'O') {
+                    grid[i][j] = 'X';
+                } else if (grid[i][j] == '#') {
+                    grid[i][j] = 'O';
+                }
+            }
+        }
+    }
+}
