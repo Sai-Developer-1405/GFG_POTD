@@ -1,0 +1,113 @@
+class Solution {
+
+    // small helper class to store coordinates and current cost
+
+    static class Cell {
+
+        int x, y, cost;
+
+        Cell(int x, int y, int cost) {
+
+            this.x = x;
+
+            this.y = y;
+
+            this.cost = cost;
+
+        }
+
+    }
+
+ 
+
+    public int minCostPath(int[][] mat) {
+
+        if (mat == null || mat.length == 0 || mat[0].length == 0) return 0;
+
+ 
+
+        int n = mat.length, m = mat[0].length;
+
+ 
+
+        int[][] dist = new int[n][m];
+
+        for (int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
+
+ 
+
+        // priority by smallest current "max-step" cost
+
+        PriorityQueue<Cell> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a.cost));
+
+ 
+
+        dist[0][0] = 0;
+
+        pq.add(new Cell(0, 0, 0));
+
+ 
+
+        int[] dx = {1, -1, 0, 0};
+
+        int[] dy = {0, 0, 1, -1};
+
+ 
+
+        while (!pq.isEmpty()) {
+
+            Cell cur = pq.poll();
+
+ 
+
+            // If we have reached destination, this is optimal due to PQ ordering
+
+            if (cur.x == n - 1 && cur.y == m - 1) return cur.cost;
+
+ 
+
+            // stale entry check
+
+            if (cur.cost > dist[cur.x][cur.y]) continue;
+
+ 
+
+            for (int i = 0; i < 4; i++) {
+
+                int nx = cur.x + dx[i];
+
+                int ny = cur.y + dy[i];
+
+ 
+
+                if (nx < 0 || ny < 0 || nx >= n || ny >= m) continue;
+
+ 
+
+                int step = Math.abs(mat[cur.x][cur.y] - mat[nx][ny]);
+
+                int newCost = Math.max(cur.cost, step);
+
+ 
+
+                if (newCost < dist[nx][ny]) {
+
+                    dist[nx][ny] = newCost;
+
+                    pq.add(new Cell(nx, ny, newCost));
+
+                }
+
+            }
+
+        }
+
+ 
+
+        // Shouldn't reach here for valid non-empty mat, but return dist value anyway
+
+        return dist[n - 1][m - 1] == Integer.MAX_VALUE ? -1 : dist[n - 1][m - 1];
+
+    }
+
+}
