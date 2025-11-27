@@ -1,0 +1,19 @@
+class Solution {
+    subsetXORSum(arr) {
+        const n = arr.length;
+        let ans = 0;
+        for (let bit = 0; bit <= 10; bit++) {
+            let countSet = 0;
+            for (let num of arr) {
+                if ((num & (1 << bit)) !== 0) {
+                    countSet++;
+                }
+            }
+            if (countSet > 0) {
+                ans += (1 << bit) * (1 << (n - 1));
+            }
+        }
+
+        return ans;
+    }
+}
